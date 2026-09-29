@@ -31,6 +31,14 @@ venv/
 env/
 .env/
 
+# Claude SEO managed runtime (manual source checkout)
+.setup.lock
+.runtime-state.next
+runtime-state.json
+.venv.next-*/
+.venv.previous/
+ms-playwright/
+
 # Secrets and credentials (NEVER commit these)
 .env
 .env.*

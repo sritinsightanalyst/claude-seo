@@ -148,7 +148,7 @@ except Exception:
         os.unlink(tmp)
     raise
 
-print('  ✓ MCP server configured in settings.json')
+print('  [OK] MCP server configured in settings.json')
 PY
     if [ $? -ne 0 ]; then
         echo "  ⚠  Could not auto-configure MCP server."

@@ -1,5 +1,7 @@
 """Static installer/runtime contract checks that do not mutate a real home."""
 
+import os
+import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -31,7 +33,16 @@ def test_windows_installer_delegates_to_runtime_without_path_mutation() -> None:
 
 def test_launcher_is_executable_and_uses_safe_exec() -> None:
     launcher = ROOT / "bin/claude-seo"
-    assert launcher.stat().st_mode & 0o100
+    if os.name == "nt":
+        result = subprocess.run(
+            ["git", "-C", str(ROOT), "ls-files", "--stage", "--", "bin/claude-seo"],
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        assert any(line.startswith("100755 ") for line in result.stdout.splitlines())
+    else:
+        assert launcher.stat().st_mode & 0o100
     text = launcher.read_text(encoding="utf-8")
     assert 'exec py -3 "${runtime}" "$@"' in text
     assert 'exec python3 "${runtime}" "$@"' in text

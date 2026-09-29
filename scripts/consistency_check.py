@@ -240,7 +240,8 @@ def check_flow_lock(files):
             errors.append(f"flow lock: missing {rel}")
             continue
         with open(full, "rb") as fh:
-            got = hashlib.sha256(fh.read()).hexdigest()
+            content = fh.read().replace(b"\r\n", b"\n")
+            got = hashlib.sha256(content).hexdigest()
         if got != want:
             errors.append(f"flow lock: hash mismatch {rel}")
     extra = {f for f in files

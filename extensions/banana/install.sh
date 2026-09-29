@@ -128,7 +128,7 @@ except Exception:
         os.unlink(tmp)
     raise
 
-print('  ✓ nanobanana-mcp configured in settings.json')
+print('  [OK] nanobanana-mcp configured in settings.json')
 PY
         if [ $? -ne 0 ]; then
             echo "✗ Could not auto-configure MCP server."

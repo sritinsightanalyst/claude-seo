@@ -143,7 +143,15 @@ def _resolve_filepath():
     return None
 
 
+def _configure_utf8():
+    for stream in (sys.stdout, sys.stderr):
+        reconfigure = getattr(stream, "reconfigure", None)
+        if reconfigure:
+            reconfigure(encoding="utf-8", errors="replace")
+
+
 def main():
+    _configure_utf8()
     filepath = _resolve_filepath()
     if not filepath:
         sys.exit(0)

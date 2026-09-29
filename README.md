@@ -119,9 +119,23 @@ powershell -ExecutionPolicy Bypass -File claude-seo\install.ps1
 
 ## Quick Start
 
+Run these slash commands in Claude Code's prompt, after opening Claude Code from
+the website's project directory. They are not PowerShell or shell commands. For
+marketplace installs, run `/seo setup` once to provision the isolated runtime;
+manual installers perform setup automatically. Use `/seo doctor` to check readiness.
+
 ```bash
-# Start Claude Code
 claude
+```
+
+Then enter these commands in the Claude Code prompt:
+
+```text
+# Marketplace install only: provision the runtime once
+/seo setup
+
+# Check the runtime before the first audit
+/seo doctor
 
 # Full site audit: parallel sub-agents produce a prioritized action plan
 /seo audit https://example.com

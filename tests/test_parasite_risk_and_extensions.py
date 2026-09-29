@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import os
 import stat
+import subprocess
 import sys
 from pathlib import Path
 
@@ -98,6 +99,19 @@ def test_audit_page_counts_pattern_hits() -> None:
 # ---------------------------------------------------------------------------
 
 
+def _is_executable(path: Path) -> bool:
+    if os.name != "nt":
+        return bool(path.stat().st_mode & stat.S_IXUSR)
+    relative = path.relative_to(_REPO_ROOT).as_posix()
+    result = subprocess.run(
+        ["git", "-C", str(_REPO_ROOT), "ls-files", "--stage", "--", relative],
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+    return any(line.startswith("100755 ") for line in result.stdout.splitlines())
+
+
 @pytest.mark.parametrize(
     "name,skill_dir",
     [
@@ -129,8 +143,7 @@ def test_extension_has_install_skill_and_docs(name: str, skill_dir: str) -> None
 )
 def test_extension_install_script_is_executable(name: str) -> None:
     install = _REPO_ROOT / "extensions" / name / "install.sh"
-    mode = install.stat().st_mode
-    assert mode & stat.S_IXUSR, f"{name}/install.sh must be executable for chmod"
+    assert _is_executable(install), f"{name}/install.sh must be executable for chmod"
 
 
 def test_every_extension_install_and_uninstall_is_executable() -> None:
@@ -142,8 +155,7 @@ def test_every_extension_install_and_uninstall_is_executable() -> None:
             script = ext / script_name
             if not script.exists():
                 continue
-            mode = script.stat().st_mode
-            if not (mode & stat.S_IXUSR):
+            if not _is_executable(script):
                 failures.append(f"{ext.name}/{script_name}")
     assert not failures, (
         "Extension scripts missing user-exec bit (chmod +x):\n  "

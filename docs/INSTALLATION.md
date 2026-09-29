@@ -92,19 +92,24 @@ The installer copies files to:
 
 ## Verify Installation
 
-1. Start Claude Code:
+Claude SEO runs as slash commands inside Claude Code, not directly in PowerShell
+or a shell. Open Claude Code from the website project you want to analyze:
 
 ```bash
 claude
 ```
 
-2. Check that the skill is loaded:
+For marketplace installs, provision the isolated runtime once. Manual installers
+already perform this setup. Then check readiness and run an audit in the Claude
+Code prompt:
 
-```
-/seo
+```text
+/seo setup
+/seo doctor
+/seo audit https://example.com
 ```
 
-You should see a help message or prompt for a URL.
+Use `/seo` in the Claude Code prompt to display the command help.
 
 ## Uninstallation
 
