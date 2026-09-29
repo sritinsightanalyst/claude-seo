@@ -119,6 +119,22 @@ powershell -ExecutionPolicy Bypass -File claude-seo\install.ps1
 
 ## Quick Start
 
+### One-Command Audit From This Checkout (Windows)
+
+Install and sign in to the Claude Code CLI first. From PowerShell in this repo,
+run:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\run-claude-seo.ps1
+```
+
+Enter a website when prompted. The launcher prepares the isolated runtime if
+needed, loads this checkout as a local plugin, and starts an interactive audit.
+Approve Claude Code tool requests as they appear. After reviewing the results,
+type `/exit` to close Claude Code; the launcher then opens the saved
+`{domain}-audit/` folder in Explorer. Pass `-Url https://example.com` to skip
+the URL prompt.
+
 Run these slash commands in Claude Code's prompt, after opening Claude Code from
 the website's project directory. They are not PowerShell or shell commands. For
 marketplace installs, run `/seo setup` once to provision the isolated runtime;

@@ -50,6 +50,21 @@ powershell -ExecutionPolicy Bypass -File claude-seo\install.ps1
 
 The Windows path uses `git clone` rather than `irm | iex` because Claude Code's own security guardrails flag piped remote-script execution. Inspect `install.ps1` before running.
 
+### One-Command Run From a Source Checkout (Windows)
+
+Install and sign in to the Claude Code CLI, open PowerShell in the cloned repo,
+then run:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\run-claude-seo.ps1
+```
+
+The launcher asks for a website, prepares the isolated dependencies if needed,
+loads this repo as a local plugin, and starts an interactive audit. Claude Code
+will still ask for permission before using tools. After reviewing the results,
+type `/exit` to close Claude Code; the launcher then opens the saved
+`{domain}-audit/` folder. To skip the URL prompt, pass `-Url https://example.com`.
+
 ## Manual Installation
 
 1. **Clone the repository**
