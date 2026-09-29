@@ -80,8 +80,9 @@ if (-not (Test-Path -LiteralPath $RuntimeScript -PathType Leaf)) {
     exit 1
 }
 
-$claude = Get-Command -Name "claude" -CommandType Application -ErrorAction SilentlyContinue
-if ($null -eq $claude) {
+$claudeCommand = Get-Command -Name "claude" -CommandType Application -ErrorAction SilentlyContinue
+$claudePath = if ($null -ne $claudeCommand) { $claudeCommand.Source } else { Join-Path $env:USERPROFILE ".local\bin\claude.exe" }
+if (-not (Test-Path -LiteralPath $claudePath -PathType Leaf)) {
     Write-Host "Claude Code CLI was not found on PATH." -ForegroundColor Red
     Write-Host "Install Claude Code, sign in, then run this script again:" -ForegroundColor Yellow
     Write-Host "https://code.claude.com/docs/en/quickstart"
@@ -152,7 +153,7 @@ $auditStarted = Get-Date
 $claudeArgs = @("--plugin-dir", $RepoRoot, "/seo audit $Url")
 Push-Location -LiteralPath $RepoRoot
 try {
-    & $claude.Source @claudeArgs
+    & $claudePath @claudeArgs
     $claudeExitCode = $LASTEXITCODE
 } finally {
     Pop-Location
